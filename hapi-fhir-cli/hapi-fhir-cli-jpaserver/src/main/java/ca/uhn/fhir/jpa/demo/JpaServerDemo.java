@@ -24,10 +24,12 @@ import ca.uhn.fhir.rest.server.IResourceProvider;
 import ca.uhn.fhir.rest.server.RestfulServer;
 import ca.uhn.fhir.rest.server.interceptor.CorsInterceptor;
 import org.springframework.web.context.ContextLoaderListener;
+import org.springframework.web.cors.CorsConfiguration;
 import org.springframework.web.context.WebApplicationContext;
 
 import javax.servlet.ServletException;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 public class JpaServerDemo extends RestfulServer {
@@ -139,8 +141,23 @@ public class JpaServerDemo extends RestfulServer {
 		 */
 		setPagingProvider(new FifoMemoryPagingProvider(10));
 
+
+		CorsConfiguration config = new CorsConfiguration();
+        config.addAllowedHeader("x-fhir-starter");
+        config.addAllowedHeader("Origin");
+        config.addAllowedHeader("Prefer");
+        config.addAllowedHeader("Accept");
+        config.addAllowedHeader("X-Requested-With");
+        config.addAllowedHeader("Content-Type");
+
+        config.addAllowedOrigin("*");
+
+        config.addExposedHeader("Location");
+        config.addExposedHeader("Content-Location");
+        config.setAllowedMethods(Arrays.asList("GET", "POST", "PUT", "DELETE", "OPTIONS", "PATCH"));
 		// Register a CORS filter
-		CorsInterceptor corsInterceptor = new CorsInterceptor();
+		CorsInterceptor corsInterceptor = new CorsInterceptor(config);
+
 		registerInterceptor(corsInterceptor);
 
 		DaoConfig daoConfig = myAppCtx.getBean(DaoConfig.class);
