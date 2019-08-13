@@ -146,6 +146,7 @@ public class JpaServerDemo extends RestfulServer {
         config.addAllowedHeader("x-fhir-starter");
         config.addAllowedHeader("Origin");
         config.addAllowedHeader("Prefer");
+        config.addAllowedHeader("Authorization");
         config.addAllowedHeader("Accept");
         config.addAllowedHeader("X-Requested-With");
         config.addAllowedHeader("Content-Type");
